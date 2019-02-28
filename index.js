@@ -76,7 +76,6 @@ module.exports.copyProject = async function (projectID, newProject, username = '
     let bean = {
       _id: oldBean._id,
       name: oldBean.name,
-      creator: username,
       follows: oldBean.follows && oldBean.follows.length ? [...oldBean.follows, username] : [username]
     };
     let saveResult = await this.saveProject(bean);
