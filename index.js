@@ -9,7 +9,7 @@ module.exports.setRegistry = (registry) => {
   CONFIG.registry = registry;
 }
 
-module.exports.checkProject = async function (projectID) {
+module.exports.listProject = async function (projectID) {
   let url = path.resolve(CONFIG.registry, 'project/list.php');
   let result = await req({
     url,
@@ -21,9 +21,14 @@ module.exports.checkProject = async function (projectID) {
   if (result && result.code === 1 &&
     result.data && result.data.list &&
     result.data.list.length) {
-    return result.data.list[0];
+    return result.data.list;
   }
-  return null;
+  return [];
+}
+
+module.exports.checkProject = async function (projectID) {
+  let list = await this.listProject(projectID);
+  return list && list.length > 0 ? list[list.length - 1] : null;
 }
 
 /**
@@ -89,7 +94,8 @@ module.exports.listMock = async function (projectID) {
   let result = await req({
     url,
     qs: {
-      projectID
+      projectID,
+      pageSize: 1000
     }
   });
   if (result && result.code && result.data && result.data.list && result.data.list.length) {

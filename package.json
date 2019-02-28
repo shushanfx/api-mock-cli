@@ -1,6 +1,6 @@
 {
   "name": "api-mock-cli",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "A command line tool for api-mock.",
   "main": "index.js",
   "scripts": {
@@ -21,12 +21,13 @@
   },
   "homepage": "https://github.com/shushanfx/api-mock-cli#readme",
   "dependencies": {
+    "cli-table": "^0.3.1",
     "commander": "^2.19.0",
     "inquirer": "^6.2.2",
     "ora": "^3.1.0",
     "request": "^2.88.0"
   },
   "bin": {
-    "api-mock": "./lib/cli"
+    "api-mock": "./lib/cli.js"
   }
 }
