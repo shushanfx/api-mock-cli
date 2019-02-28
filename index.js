@@ -37,7 +37,7 @@ module.exports.checkProject = async function (projectID) {
  * @param {String} newProject 新项目标识
  * @returns {Object} 返回值，1表示成功；-1表示复制失败；-2 原项目不存在；-3 新项目已存在；-8: 参数异常
  */
-module.exports.copyProject = async function (projectID, newProject) {
+module.exports.copyProject = async function (projectID, newProject, username = 'shushanfx') {
   if (!projectID || !newProject) {
     return {
       code: -8,
@@ -72,10 +72,19 @@ module.exports.copyProject = async function (projectID, newProject) {
     }
   });
   if (result && result.code === 1 && result.data) {
+    let oldBean = result.data;
+    let bean = {
+      _id: oldBean._id,
+      name: oldBean.name,
+      creator: username,
+      follows: oldBean.follows && oldBean.follows.length ? [...oldBean.follows, username] : [username]
+    };
+    let saveResult = await this.saveProject(bean);
+
     return {
       code: 1,
       message: "复制成功",
-      data: result.data
+      data: saveResult
     }
   }
   return {
@@ -113,6 +122,26 @@ module.exports.listMock = async function (projectID) {
  */
 module.exports.saveMock = async function (bean) {
   let url = path.resolve(CONFIG.registry, 'be/save.php');
+  let result = await req({
+    url,
+    method: 'put',
+    json: bean
+  });
+  if (result && result.code === 1) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * 保存Mock信息，
+ * @param {Object} bean
+ * @param {String} [bean._id] mock的内部id
+ * @param {String} [bean.proxy] 代理信息
+ * @returns {Boolean} 保存是否成功，true表示成功，false表示失败
+ */
+module.exports.saveProject = async function (bean) {
+  let url = path.resolve(CONFIG.registry, 'project/save.php');
   let result = await req({
     url,
     method: 'put',
