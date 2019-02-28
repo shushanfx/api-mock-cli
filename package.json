@@ -1,0 +1,32 @@
+{
+  "name": "api-mock-cli",
+  "version": "1.0.0",
+  "description": "A command line tool for api-mock.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shushanfx/api-mock-cli.git"
+  },
+  "keywords": [
+    "api-mock",
+    "cli"
+  ],
+  "author": "shushanfx",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shushanfx/api-mock-cli/issues"
+  },
+  "homepage": "https://github.com/shushanfx/api-mock-cli#readme",
+  "dependencies": {
+    "commander": "^2.19.0",
+    "inquirer": "^6.2.2",
+    "ora": "^3.1.0",
+    "request": "^2.88.0"
+  },
+  "bin": {
+    "api-mock": "./lib/cli"
+  }
+}
